@@ -1,0 +1,12 @@
+#separator:tab
+#html:false
+#notetype:Basic
+#deck:C++ Software Design
+
+White box test	A test that knows about internal implementation details — couples test code to production internals, so it breaks when those details change. [Guideline 4]
+Black box test	A test that only verifies expected behavior, with no knowledge of internal implementation — breaks only when behavior changes, not when details change. [Guideline 4]
+Why does a private member function that needs testing signal a design problem?	If a function can't be tested where it lives, it likely doesn't belong there — it should be extracted so it can be tested in isolation. [Guideline 4]
+Why does declaring a test class as friend of a production class cause a design problem?	It creates a cyclic dependency: production code now knows about test code. Production code should be oblivious to tests. [Guideline 4]
+Why is using protected + inheritance to expose internals for testing a bad idea?	It abuses inheritance just to gain access — equivalent to making the member public, since anyone can derive and access it. [Guideline 4]
+ can only access the public interface, so fewer things can touch private members — tightening the encapsulation boundary. [Guideline 4]
+A private function updateCollection() in Widget is hard to test. What does this indicate?	It changes for reasons independent of Widget — by SRP it should be extracted, not buried in Widget's private section. [Guideline 4]
