@@ -2,11 +2,14 @@
 #html:false
 #notetype:Basic
 #deck:C++ Software Design
+#tags column:3
 
-White box test	A test that knows about internal implementation details — couples test code to production internals, so it breaks when those details change. [Guideline 4]
-Black box test	A test that only verifies expected behavior, with no knowledge of internal implementation — breaks only when behavior changes, not when details change. [Guideline 4]
-Why does a private member function that needs testing signal a design problem?	If a function can't be tested where it lives, it likely doesn't belong there — it should be extracted so it can be tested in isolation. [Guideline 4]
-Why does declaring a test class as friend of a production class cause a design problem?	It creates a cyclic dependency: production code now knows about test code. Production code should be oblivious to tests. [Guideline 4]
-Why is using protected + inheritance to expose internals for testing a bad idea?	It abuses inheritance just to gain access — equivalent to making the member public, since anyone can derive and access it. [Guideline 4]
- can only access the public interface, so fewer things can touch private members — tightening the encapsulation boundary. [Guideline 4]
-A private function updateCollection() in Widget is hard to test. What does this indicate?	It changes for reasons independent of Widget — by SRP it should be extracted, not buried in Widget's private section. [Guideline 4]
+White box test	A test that knows about internal implementation details — couples test code to production internals, so it breaks when those details change. [Guideline 4]	vocab guideline4
+Black box test	A test that only verifies expected behavior, with no knowledge of internal implementation — breaks only when behavior changes, not when details change. [Guideline 4]	vocab guideline4
+Why is testability a design concern, not just a testing concern?	If code is hard to test, it's usually a sign of poor separation of concerns — the design needs to change, not just the tests. [Guideline 4]	why-it-matters guideline4
+A private member function needs to be tested. You wrap it in a public function and test through that. What's wrong?	White box test — couples the test to an internal implementation detail. If the public function is refactored, the test silently stops covering the original behavior. [Guideline 4]	scenario guideline4
+A private member function needs to be tested. You declare the test class as a friend of the production class. What's wrong?	Cyclic dependency — production code now knows about test code. Production should be oblivious to tests. [Guideline 4]	scenario guideline4
+A private member function needs to be tested. You move it to protected and derive a test class from the production class. What's wrong?	Abuses inheritance just to gain access — equivalent to making it public since anyone can derive. Inheritance is rarely the answer. [Guideline 4]	scenario guideline4
+A private function in a class is important enough to test in isolation but can't be tested as-is. What should you do?	Extract it as a nonmember non-friend free function — it becomes trivially testable and the original class becomes more encapsulated. [Guideline 4]	scenario guideline4
+You extract a private member function into a free function. How does this increase encapsulation?	The free function can only access the public interface — fewer things touch private members, so the class becomes more encapsulated. [Guideline 4]	scenario guideline4
+A private function can't be tested where it lives. What does this indicate about the design?	It likely changes for reasons independent of its class — by SRP it should be extracted, not buried in the private section. [Guideline 4]	scenario guideline4
