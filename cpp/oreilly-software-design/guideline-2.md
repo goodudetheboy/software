@@ -1,6 +1,6 @@
-## Guideline 2: Design for Change
+# Guideline 2: Design for Change
 
-### Separation of Concerns
+## Separation of Concerns
 
 The idea is to make changes as easy as possible once code is written down
 
@@ -16,7 +16,7 @@ Which leads the S in SOLID: **Single-Responsiblity Principle**
 
 - Separate things that change for different reasons
 
-### Problems with the given `Document` class in the book
+## Problems with the given `Document` class in the book
 
 1. exportToJSON(): since this class is pure virtual, this must be implemented in the child classes. Most likely will use external dependencies, and now suddenly child classes are depending on an external dependency for no reason rather than bad design.
 	- This makes the derived classes **artificically independent** on the JSON libraries.
@@ -27,11 +27,11 @@ Which leads the S in SOLID: **Single-Responsiblity Principle**
 
 **This makes `Document` a ill-designed class**
 
-### Logical vs Physical Coupling
+## Logical vs Physical Coupling
 
 There's also another problem with the curren design. An `User` class logically depends on the `Document` class, but since `Document` has a physical dependency on external JSON or serialization library, there's also the **transitive** dependency of the `User` on these libraries that are higher ups too. Pretty sucks huh.
 
-### High- vs Low-Level Architecture
+## High- vs Low-Level Architecture
 
 > High vs Low
 >
@@ -39,13 +39,13 @@ There's also another problem with the curren design. An `User` class logically d
 
 The best way to solve this problem is to extract the two extractToJson() and serialize() function from the `Document` class and create its own class on the same level as the `User` class. When we need to make change to the Serialize class, we only need to make changes in one place and relinked only in that place.
 
-### Don't Repeat Yourself
+## Don't Repeat Yourself
 
 Core idea: Just as much as a file should have single responsibility, a responsiblity shouldn't be in multiple files either.
 
 We should not design such that key information appears in multiple places, but rather only in one place so we can make changes later easier.
 
-### Avoid Premature Separation of Concerns
+## Avoid Premature Separation of Concerns
 
 > Don't try to achieve SOLID, use SOLID to achieve maintainability
 

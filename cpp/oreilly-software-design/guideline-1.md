@@ -1,4 +1,4 @@
-## Guideline 1: Understand the Importance of Software Design
+# Guideline 1: Understand the Importance of Software Design
 
 - Treat software design as essential part of writing software
 - Focus less on C++ features and more on the design

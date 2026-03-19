@@ -1,6 +1,6 @@
-## Guideline 3: Separate interfaces to Avoid Artificial Coupling
+# Guideline 3: Separate interfaces to Avoid Artificial Coupling
 
-### Segregate Interfaces to Separate Concerns
+## Segregate Interfaces to Separate Concerns
 
 The book mentions a `exportDocument()` function that theoretically use exportToJson() to export documents.
 
@@ -22,6 +22,6 @@ void exportDocument( JSONExportable const& exportable )
 
 Here, it can be argued that ISP is similar to SRP. It is, but rather think of it as a special case of SRP - because this deserve special attention to when designing interfaces. Changing interfaces after it's designed is gonna be very hard, so it's important to get it right the first time around. "Measure twice, cut once"
 
-#### Minimizing Requirements of Template Arguments
+### Minimizing Requirements of Template Arguments
 
 ISP can also be applied to Templates.
