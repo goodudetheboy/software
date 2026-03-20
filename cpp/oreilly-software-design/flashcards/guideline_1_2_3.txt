@@ -2,55 +2,60 @@
 #html:false
 #notetype:Basic
 #deck:C++ Software Design
+#tags column:3
 
-Software Design	The art of managing interdependencies between software components — minimizing artificial dependencies and introducing necessary abstractions. [Guideline 1]
+Software Design	The art of managing interdependencies between software components — minimizing artificial dependencies and introducing necessary abstractions. [Guideline 1]	vocab guideline1
 
-Artificial Dependency	A dependency accidentally introduced through inattention or lack of big-picture thinking — not required by the problem. [Guideline 1]
+Artificial Dependency	A dependency accidentally introduced through inattention or lack of big-picture thinking — not required by the problem. [Guideline 1]	vocab guideline1
 
-Necessary Dependency	A dependency intrinsic to the problem — unavoidable coupling where different pieces must work together. [Guideline 1]
+Necessary Dependency	A dependency intrinsic to the problem — unavoidable coupling where different pieces must work together. [Guideline 1]	vocab guideline1
 
-Separation of Concerns	Group only things that truly belong together. Separate everything that changes for different reasons. [Guideline 2]
+Separation of Concerns	Group only things that truly belong together. Separate everything that changes for different reasons. [Guideline 2]	vocab guideline2
 
-Orthogonality	Two aspects are orthogonal when changing one has zero effect on the other — completely independent directions. [Guideline 2]
+Orthogonality	Two aspects are orthogonal when changing one has zero effect on the other — completely independent directions. [Guideline 2]	vocab guideline2
 
-Single-Responsibility Principle (SRP)	A class should have only one reason to change. [Guideline 2]
+Single-Responsibility Principle (SRP)	A class should have only one reason to change. [Guideline 2]	vocab guideline2
 
-Don't Repeat Yourself (DRY)	Minimize duplication — every piece of knowledge should have one single authoritative place in the codebase. [Guideline 2]
+Don't Repeat Yourself (DRY)	Minimize duplication — every piece of knowledge should have one single authoritative place in the codebase. [Guideline 2]	vocab guideline2
 
-Interface Segregation Principle (ISP)	Clients should not be forced to depend on methods they do not use. [Guideline 3]
+Interface Segregation Principle (ISP)	Clients should not be forced to depend on methods they do not use. [Guideline 3]	vocab guideline3
 
-High Level (architecture)	The stable parts of your architecture — core abstractions and business logic that rarely change. [Guideline 2]
+Open-Closed Principle (OCP)	Software should be open for extension but closed for modification. [Guideline 2]	vocab guideline2
 
-Low Level (architecture)	The volatile parts of your architecture — implementation details that change more often. [Guideline 2]
+High Level (architecture)	The stable parts of your architecture — core abstractions and business logic that rarely change. [Guideline 2]	vocab guideline2
 
-What goes wrong when you violate the SRP?	A class changes for many unrelated reasons — every change risks a ripple effect across the entire codebase. [Guideline 2]
+Low Level (architecture)	The volatile parts of your architecture — implementation details that change more often. [Guideline 2]	vocab guideline2
 
-What goes wrong when you violate the ISP?	Clients are forced to depend on things they never use — an unrelated change forces them to recompile, retest, and redeploy. [Guideline 3]
+What goes wrong when you violate the SRP?	A class changes for many unrelated reasons — every change risks a ripple effect across the entire codebase. [Guideline 2]	why-it-matters guideline2
 
-What goes wrong when high level depends on low level?	Volatile implementation details control your stable core — every change to a library or concrete class ripples up into business logic. [Guideline 2]
+What goes wrong when you violate the ISP?	Clients are forced to depend on things they never use — an unrelated change forces them to recompile, retest, and redeploy. [Guideline 3]	why-it-matters guideline3
 
-What goes wrong when you ignore separation of concerns?	A small change cascades unpredictably — a task rated as minor effort becomes a week-long ordeal because unrelated things are coupled. [Guideline 1]
+What goes wrong when you violate the OCP?	Adding something new forces modification of existing unrelated code — classes that should be untouched are forced to change. [Guideline 2]	why-it-matters guideline2
 
-A Document class has both exportToJSON() and serialize(). What design problem does this introduce?	SRP violation — two orthogonal concerns are bundled together. Changes to either affect all users of Document, even those only needing one concern. [Guideline 2]
+What goes wrong when high level depends on low level?	Volatile implementation details control your stable core — every change to a library or concrete class ripples up into business logic. [Guideline 2]	why-it-matters guideline2
 
-exportDocument() takes a Document& but only ever calls exportToJSON(). What's wrong and how do you fix it?	ISP violation — it's forced to depend on ByteStream and serialize() it never uses. Fix: change parameter to JSONExportable& instead. [Guideline 3]
+What goes wrong when you ignore separation of concerns?	A small change cascades unpredictably — a task rated as minor effort becomes a week-long ordeal because unrelated things are coupled. [Guideline 1]	why-it-matters guideline1
 
-PDF and Word both use a shared DocumentType enum in serialize(). You add XML. What goes wrong?	OCP violation — adding XML forces modification of the enum, causing PDF and Word to recompile even though they have no relation to XML. [Guideline 2]
+A Document class bundles exportToJSON() and serialize() together. A function only needs JSON export. What's wrong and how do you fix it?	SRP violation — two orthogonal concerns are coupled. Fix: split into JSONExportable and Serializable interfaces so clients depend only on what they need. [Guideline 2]	scenario guideline2
 
-Document.h includes a JSON library header. A User class includes Document.h but never uses JSON. What's the problem?	Physical dependency — User is forced to recompile whenever the JSON library changes, despite having no logical need for it. [Guideline 2]
+A Document class has a serialize() function. All document types (PDF, Word) share a DocumentType enum to tag the byte stream. You add XML. What breaks?	OCP violation — adding XML forces modification of the enum, causing PDF and Word to recompile even though they are unrelated to XML. [Guideline 2]	scenario guideline2
 
-You want to swap JSON libraries. exportToJSON() is a virtual function on Document. What's the blast radius?	All deriving classes (PDF, Word, etc.) must be updated — they each implement exportToJSON() and depend on the same library. Fix: extract JSON as a separate concern. [Guideline 2]
+Document.h includes a JSON library header. A User class includes Document.h but never touches JSON. What's the hidden problem?	Physical dependency — User must recompile whenever the JSON library changes, despite having no logical need for it. [Guideline 2]	scenario guideline2
 
-A serialize() function requires a DocumentType enum shared across all document types. Why is this dangerous?	It couples sibling classes to each other — PDF knows Word exists, Word knows PDF exists. They should be completely unaware of each other. [Guideline 2]
+A function exportDocument() takes a Document& but only ever calls exportToJSON(). What's wrong and how do you fix it?	ISP violation — it's forced to depend on ByteStream and serialize() it never uses. Fix: change the parameter to JSONExportable& instead. [Guideline 3]	scenario guideline3
 
-You split Document into JSONExportable and Serializable interfaces. Document inherits from both. What does this solve?	ISP — clients can now depend only on the interface they need. exportDocument() takes JSONExportable& and knows nothing about serialization. [Guideline 3]
+Serialization logic is extracted out of Document into a separate Serialization component. PDF, Word, and XML live independently. Which direction do dependencies now flow and why is that correct?	Low to high — Serialization (low level, volatile) depends on document types (high level, stable). Stable code is never forced to change by volatile code. [Guideline 2]	scenario guideline2
 
-Serialization logic is extracted into a separate Serialization component. Which direction do the dependencies now flow?	Correctly — low to high. Serialization (low level) depends on document types (high level). Document types know nothing about serialization. [Guideline 2]
+exportToJSON() on Document uses argument types from a specific JSON library in its signature. You want to swap libraries. What's the blast radius?	The signature must change, forcing all callers to update too — the library has leaked into the public interface and spread the dependency far beyond Document itself. [Guideline 2]	scenario guideline2
 
-You add a new document type XML by only writing a new XML class, with zero changes to PDF or Word. What principle does this satisfy?	OCP — the system was extended without modifying any existing code. [Guideline 2]
+A UserService class handles user authentication, sends welcome emails, and writes audit logs. What's wrong and how do you fix it?	SRP violation — three unrelated concerns are bundled together. Fix: split into AuthService, EmailService, and AuditLogger so each changes for only one reason. [Guideline 2]	scenario guideline2
 
-A task rated as 2-point effort touches entity A, which unexpectedly breaks B, C, and D. What is the root cause and the fix?	Artificial dependencies — unrelated components are coupled. Fix: apply SRP to separate concerns so changes are localized to one place. [Guideline 1]
+A PaymentProcessor interface has processPayment(), generateInvoice(), and sendReceiptEmail(). A module only needs to process payments. What's wrong?	ISP violation — the module is forced to depend on invoicing and email concerns it never uses. Fix: split into PaymentProcessor, InvoiceGenerator, and ReceiptSender. [Guideline 3]	scenario guideline3
 
-A component needs to switch serialization libraries. The serialize() function is on the Document base class. What's the problem and fix?	All document types are coupled to the serialization implementation. Fix: move serialize() out of Document entirely into a separate Serialization component. [Guideline 2]
+A Shape base class has draw() implemented using OpenGL directly. You need to support a second graphics library. What's wrong and how do you fix it?	SRP violation — the shape is coupled to a specific rendering implementation. Fix: extract drawing into a separate concern so the shape itself knows nothing about graphics libraries. [Guideline 2]	scenario guideline2
 
-exportToJSON() signature uses types from a specific JSON library. What hidden problem does this create?	The JSON library leaks into the public interface — all callers now physically depend on that library even if they don't use JSON directly. [Guideline 2]
+A config file format changes from JSON to YAML. Every class in the codebase that reads config must be updated. What design problem caused this?	Artificial dependency — concrete config format details leaked into many classes instead of being isolated behind an abstraction. Fix: introduce a Config interface so only one component knows the format. [Guideline 1]	scenario guideline1
+
+A new payment method is added to an e-commerce system. The existing PaymentType enum is shared across all payment classes and must be updated. All existing payment classes recompile. What principle is violated?	OCP — extending the system (adding a new payment method) required modifying existing unrelated code. Fix: remove the shared enum and isolate payment type knowledge behind a abstraction. [Guideline 2]	scenario guideline2
+
+A analytics module depends on a database client library just because it shares a base class with a persistence module. It never queries the database itself. What's the problem?	Physical dependency — the analytics module transitively depends on the database library through an unnecessarily shared base class. Fix: separate the interfaces so analytics only depends on what it actually needs. [Guideline 3]	scenario guideline3
