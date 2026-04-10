@@ -1,0 +1,15 @@
+#separator:tab
+#html:false
+#notetype:Basic
+#deck:C++ Software Design
+#tags column:3
+
+Static polymorphism	Compile-time polymorphism via templates — the concrete type is known at compile time, calls are resolved with zero runtime overhead. [Guideline 7]	vocab guideline7
+Dynamic polymorphism	Runtime polymorphism via virtual functions and inheritance — the concrete type is resolved through a vtable at runtime. [Guideline 7]	vocab guideline7
+Concept (a C++20 language feature to represent abstraction)	Any way to express a set of requirements for a template argument, including pre-C++20 named template parameters like InputIt. Subject to LSP and ISP just like a base class. [Guideline 7]	vocab guideline7
+What is the static equivalent of a base class?	A concept — both define a set of syntactic and semantic requirements that concrete types must satisfy. [Guideline 7]	why-it-matters guideline7
+What goes wrong if you treat the LSP as only applying to inheritance?	You miss LSP violations in template code — a type can satisfy a concept syntactically but violate its semantic contract, silently breaking behavior. [Guideline 7]	why-it-matters guideline7
+You have two functions: useDocument(Document const& doc) using a base class, and template<Document T> useDocument(T const& doc) using a concept. A colleague says the second has no constraints. Are they right?	No — both functions accept only types that satisfy the Document abstraction's requirements. The mechanism differs (runtime vs compile-time) but the semantic contract is identical. [Guideline 7]	scenario guideline7
+A C++20 concept requires exportToJSON() and serialize(). A type implements both but serialize() silently corrupts data on certain inputs. The type passes concept checking. What's wrong?	LSP violation — concepts can enforce syntactic requirements but not semantic ones. The type satisfies the concept's syntax but violates its behavioral contract. [Guideline 7]	scenario guideline7
+A team defines a single Sortable concept that requires comparison, swap, and random access. A function only needs comparison. What principle does this violate and how do you fix it?	ISP violation — the function is forced to depend on swap and random access it doesn't need. Fix: split into finer-grained concepts (Comparable, Swappable, RandomAccessible) and use only what's needed. [Guideline 7]	scenario guideline7
+A serialization library uses template<typename T> void serialize(T& obj) with no named parameter or concept. A new developer passes a type that compiles but produces garbage output. What's the design failure?	Failing to communicate concept expectations — without a named template parameter or C++20 concept, there's no expressed contract for T. Fix: use a named parameter (Serializable) or C++20 concept to document and enforce the expected behavior. [Guideline 7]	scenario guideline7
