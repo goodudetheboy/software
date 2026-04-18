@@ -1,4 +1,4 @@
-[i# Guideline 9: Pay Attention to the Ownership of Abstractions
+# Guideline 9: Pay Attention to the Ownership of Abstractions
 
 ## Dependency Inversion Princple
 
