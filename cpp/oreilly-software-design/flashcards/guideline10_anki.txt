@@ -1,0 +1,10 @@
+#separator:tab
+#html:false
+#notetype:Basic
+#deck:C++ Software Design
+#tags column:3
+What is the actual goal of Agile methodology, and what does it NOT guarantee?	The goal is quick feedback — not the ability to change code quickly. Changeability comes from good software design and architecture. [Guideline 10]	vocab guideline10
+What are the two main purposes of an architectural document?	(1) Align the whole team on a shared vision of the system — preventing misunderstandings from diverging mental models. (2) Preserve ideas, decisions, and context so they survive team turnover. [Guideline 10]	why-it-matters guideline10
+Why won't an architectural document go out of date quickly if done right?	It should only capture the big picture — overall structure, key player relationships, major tech decisions — not low-level details that change constantly. [Guideline 10]	vocab guideline10
+Your team's lead architect just quit. There's no architectural document. What's the cascade of consequences?	Essential context and reasoning behind decisions is lost. The team loses confidence to change the architecture, the code becomes more rigid and "legacy," and rewrites start looking attractive — with poor outcomes since the new code lacks the wisdom of the old. [Guideline 10]	scenario guideline10
+Two devs on the same team build features that structurally conflict. There's no architectural doc. What's the root cause?	Without a written shared vision, each developer works from their own mental model of the architecture. Diverging models lead to incompatible decisions — the kind of misunderstanding an architectural document exists to prevent. [Guideline 10]	scenario guideline10
