@@ -1,0 +1,21 @@
+#separator:tab
+#html:false
+#notetype:Basic
+#deck:C++ Software Design
+#tags column:3
+
+Design Pattern	A proven, named solution with an intent to decouple. It introduces an abstraction that manages dependencies between software entities. [Guideline 11]	vocab guideline11
+Implementation Pattern	A recurring solution that solves a code-level problem but introduces no abstraction and does not manage dependencies. Lives at the Implementation Details level, not the Software Design level. [Guideline 11]	vocab guideline11
+What are the 4 properties every design pattern must have?	1. Has a name 2. Carries an intent 3. Introduces an abstraction 4. Has been proven [Guideline 11]	vocab guideline11
+Visitor (Design Pattern)	Use when you need to extend operations on a closed set of types — when new operations are added frequently but types themselves rarely change. [Guideline 11]	vocab guideline11
+Strategy (Design Pattern)	Use to configure behavior and inject it from outside. Makes behavior a variation point — swap the "how" without changing the code that uses it. AKA policy-based design. [Guideline 11]	vocab guideline11
+Decorator (Design Pattern)	Use to nonintrusively add responsibilities to an object. Wraps existing objects to extend behavior without modifying them. [Guideline 11]	vocab guideline11
+Why does a design pattern's name matter beyond just labeling?	It lets engineers communicate structure, intent, and expected evolution in a few words — without discussing any implementation details or language specifics. [Guideline 11]	why-it-matters guideline11
+Why must a design pattern introduce an abstraction?	Without abstraction there is no decoupling. A pattern that doesn't separate high-level from low-level doesn't manage dependencies — and managing dependencies is the definition of software design. [Guidetic 11]	why-it-matters guideline11
+Strategy, Command, and Bridge look almost identical structurally. What actually distinguishes them?	Their intent. Structurally similar patterns solve different problems and are chosen based on what variation point you're trying to manage, not how they're implemented. [Guideline 11]	scenario guideline11
+A teammate calls std::make_unique<Widget>() a "Factory Method." Are they right? Why or why not?	No. std::make_unique() provides no customization point — you always get a std::unique_ptr created via new. No abstraction means no design pattern. It's an implementation pattern. [Guideline 11]	scenario guideline11
+You need to add logging, metrics, and caching to an existing HTTP client class without touching its code. Which design pattern fits and why?	Decorator — it nonintrusively wraps the existing object and layers on new responsibilities without modifying the original. [Guideline 11]	scenario guideline11
+A game engine creates enemies differently depending on the level: tutorial spawns weak goblins, boss levels spawn dragons. The spawning logic is scattered in if/else chains everywhere. What pattern fixes this and why?	Factory Method — introduce an abstract EnemyFactory with a create() method. Each level gets its own concrete factory. The game logic never changes when new enemy types are added. [Guideline 11]	scenario guideline11
+Your codebase has a Shape hierarchy (Circle, Square, Triangle). You need to keep adding new operations (draw, serialize, export) without touching the shape classes. Which pattern fits?	Visitor — the set of types is closed (shapes don't change) but operations vary. Visitor externalizes new operations without modifying existing types. [Guideline 11]	scenario guideline11
+A sorting algorithm accepts a comparison function so callers can sort ascending, descending, or by custom key — all without changing the sort code. Which pattern is this?	Strategy — the behavior (comparison logic) is injected from outside and swapped freely. The sort algorithm is the context; the comparison is the strategy. [Guideline 11]	scenario guideline11
+You have a Renderer base class and a PlatformFactory base class. PCFactory and PS5Factory each implement create(). Game logic only calls factory.create(). What pattern is this and what's the key benefit?	Factory Method. The key benefit: adding a new platform means writing a new factory class — the game logic (runGame) is never touched. Change is isolated to one place. [Guideline 11]	scenario guideline11
