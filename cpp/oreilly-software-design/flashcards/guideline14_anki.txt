@@ -1,0 +1,9 @@
+#separator:tab
+#html:false
+#notetype:Basic
+#deck:C++ Software Design
+#tags column:3
+Design pattern name (as communication tool)	The name of a design pattern expresses intent — it tells others what the problem is, which solution was chosen, and how the code is expected to evolve. [Guideline 14]	vocab guideline14
+Why does naming a template parameter BinaryReductionStrategy communicate more than BinaryOperation?	The name Strategy signals dependency injection with constraints — the caller can vary *how* the operation works but not *what* accumulate() does. BinaryOperation only describes the mechanical signature, not the design intent. [Guideline 14]	why-it-matters guideline14
+A function template parameter is named Func. It accepts a callable that filters items in a collection — callers can pass any predicate they want, no constraints. A teammate says "just name it Predicate, that's clear enough." Are they right?	Not fully. Predicate names the type of callable but misses the design intent. Since callers can pass anything with no expectations imposed, naming it UnaryStrategy (or similar) communicates that this is a Strategy — a customization point where *how* filtering works is fully delegated to the caller. [Guideline 14]	scenario guideline14
+A class is named DataLoader but internally it wraps a legacy LegacyFetcher class and maps its API to a modern interface. A reviewer says the name DataLoader is fine. What's missing?	The name hides the design pattern in use. Calling it LegacyFetcherAdapter immediately communicates it's an Adapter — mapping an existing interface to an expected one. This lets any reader understand the problem (interface mismatch) and solution (adapter) without reading the implementation. [Guideline 14]	scenario guideline14
